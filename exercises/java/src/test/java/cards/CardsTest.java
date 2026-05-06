@@ -8,7 +8,8 @@ public class CardsTest {
     @Test
     public void getDeckInOrder_return52CardsCorrectlyFormatted() {
         Cards cards = new Cards();
-        assertThat(cards.getCards()).containsExactly(
+        cards.createDeck();
+        assertThat(cards.dealCards()).containsExactly(
                 "ace of clubs",
                 "2 of clubs",
                 "3 of clubs",
@@ -63,4 +64,12 @@ public class CardsTest {
                 "king of spades"
         );
     }
+
+    @Test
+    public void getTopCard_return0Index() {
+        Cards cards = new Cards();
+        cards.createDeck();
+        assertThat(cards.seeTopCard()).isEqualTo("ace of clubs");
+    }
+
 }

@@ -1,58 +1,47 @@
 package cards;
 
 public class Cards {
-    public static void main(String[] args) {
-        System.out.println("Hello world");
-        Cards cards = new Cards();
-        String[] deckInOrder = cards.getCards();
-        for(String card: deckInOrder){
-            System.out.println(card);
+    PlayingCard[] deck = new PlayingCard[52];
+
+    public void createDeck() {
+        for (int suit = 0; suit < 4; suit++) {
+            for (int faceValue = 0; faceValue < 13; faceValue++) {
+                Suit suits = new Suit(suit);
+                PlayingCard playingCard = new PlayingCard(suits, faceValue);
+                deck[suit * 13 + faceValue] = playingCard;
+            }
         }
     }
 
-    public String[] getCards() {
-        String[] result = new String[52];
-        int[][] deck = new int[52][2];
-
-        for (int suit = 0; suit < 4; suit++) {
-            for (int faceValue = 0; faceValue < 13; faceValue++) {
-                deck[suit*13+faceValue] = new int[]{suit, faceValue};
-            }
-        }
-
+    public String[] dealCards() {
         int cardNumber = 0;
-        for (int[] card : deck) {
+        String[] result = new String[52];
+
+        for (PlayingCard card : deck) {
             String faceValueName;
-            switch (card[1]){
-                case 0: faceValueName = "ace"; break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9: faceValueName = Integer.toString(card[1]+1); break;
-                case 10: faceValueName = "jack"; break;
-                case 11: faceValueName = "queen"; break;
-                case 12: faceValueName = "king"; break;
-                default: throw new IllegalArgumentException("Something went wrong " + card[1] + "is not a valid faceValue!");
+            if (card.faceValue == 0) {
+                faceValueName = "ace";
             }
-
-            String suitName;
-            switch (card[0]){
-                case 0: suitName = "clubs"; break;
-                case 1: suitName = "diamonds"; break;
-                case 2: suitName = "hearts"; break;
-                case 3: suitName = "spades"; break;
-                default: throw new IllegalArgumentException("Something went wrong " + card[0] + "is not a valid suitName!");
+            else if (card.faceValue == 10) {
+                faceValueName = "jack";
             }
-
-            result[cardNumber] = faceValueName + " of " + suitName;
+            else if (card.faceValue == 11) {
+                faceValueName = "queen";
+            }
+            else if (card.faceValue == 12) {
+                faceValueName = "king";
+            }
+            else {
+                faceValueName = Integer.toString(card.faceValue+1);
+            }
+            result[cardNumber] = faceValueName + " of " + card.suitToString();
             cardNumber++;
         }
-
         return result;
+    }
+
+    public String seeTopCard() {
+        String [] result = dealCards();
+        return result[0];
     }
 }
